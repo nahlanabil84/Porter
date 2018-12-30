@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Porter</string>
+
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="button_sign_in">Sign in</string>
+
+    <string name="error_invalid_email">Invalid email</string>
+    <string name="error_invalid_password">Short password</string>
+    <string name="error_invalid_email_or_password">Invalid email or password</string>
+    <string name="error_login">Failed to login</string>
+
+    <string name="error_token_does_not_exist">Session ends. Login again</string>
+
+    <string name="table_title_date">Date</string>
+    <string name="table_title_number">Number</string>
+
+    <string name="error_get_testing_data">Failed to get data</string>
+
+    <string name="try_again">Try again</string>
+    <string name="no_internet_connection">No internet connection</string>
+</resources>
