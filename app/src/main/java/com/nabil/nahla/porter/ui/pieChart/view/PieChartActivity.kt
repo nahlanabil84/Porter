@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.nabil.nahla.porter.R
+import com.nabil.nahla.porter.ui.barcode.view.BarcodeActivity
 import com.nabil.nahla.porter.ui.login.view.LoginActivity
 import com.nabil.nahla.porter.ui.pieChart.adapter.DataAdapter
 import com.nabil.nahla.porter.ui.pieChart.presenter.PieChartPresenter
@@ -60,6 +61,10 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         R.id.logoutAction -> {
             clearToken()
             openLoginActivity()
+            true
+        }
+        R.id.barcodeAction -> {
+            openBarcodeActivity()
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -190,17 +195,22 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         snackbar.show()
     }
 
+    private fun clearToken() {
+        val settings = getSharedPreferences("TOKEN", 0)
+        val editor = settings.edit()
+        editor.clear()
+        editor.apply()
+    }
+
     private fun openLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    private fun clearToken() {
-        val settings = getSharedPreferences("TOKEN", 0)
-        val editor = settings.edit()
-        editor.clear()
-        editor.apply()
+    private fun openBarcodeActivity() {
+        val intent = Intent(this, BarcodeActivity::class.java)
+        startActivity(intent)
     }
 
 }

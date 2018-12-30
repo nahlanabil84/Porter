@@ -5,4 +5,10 @@
           android:icon="@drawable/ic_sign_out"
           android:orderInCategory="100"
           app:showAsAction="always"/>
+
+    <item android:id="@+id/barcodeAction"
+          android:title="@string/barcode"
+          android:icon="@drawable/ic_barcode"
+          android:orderInCategory="100"
+          app:showAsAction="always"/>
 </menu>
