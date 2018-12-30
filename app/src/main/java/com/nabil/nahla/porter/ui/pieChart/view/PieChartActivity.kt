@@ -178,11 +178,12 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
     }
 
     private fun showErrorSnackBar(errorMsg: String) {
-        val snackbar = Snackbar.make(
-            findViewById(android.R.id.content),
-            errorMsg,
-            Snackbar.LENGTH_LONG
-        )
+        val snackbar = Snackbar.make(findViewById(android.R.id.content), errorMsg, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.logout)) {
+                clearToken()
+                openLoginActivity()
+            }
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         val sbView = snackbar.view
         val textView = sbView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
         textView.setTextColor(Color.WHITE)

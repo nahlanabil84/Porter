@@ -1,5 +1,6 @@
 package com.nabil.nahla.porter.ui.login.model
 
+import com.nabil.nahla.porter.R
 import com.nabil.nahla.porter.data.network.AppApiHelper
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +18,7 @@ open class PieChartModelImp : PieChartModel {
             }
 
             override fun onFailure(call: Call<MutableList<Any>>, t: Throwable) {
-                listener.onFailed(t.localizedMessage)
+                listener.onFailed(R.string.error_token_does_not_exist)
             }
         })
     }
