@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.nabil.nahla.porter.R
@@ -24,6 +25,9 @@ class LoginActivity : AppCompatActivity(), LoginView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+        checkLoggedIn()
 
         loginPresenter = LoginPresenterImp(this)
 
@@ -54,22 +58,29 @@ class LoginActivity : AppCompatActivity(), LoginView {
         openDataActivity()
     }
 
-    private fun validateEmailPassword() {
-        loginPresenter.validateData(
-            (emailET?.text ?: throw NullPointerException("Expression 'emailET?.text' must not be null")).toString()
-            ,
-            (passwordET?.text
-                ?: throw NullPointerException("Expression 'passwordET?.text' must not be null")).toString()
-        )
+    private fun checkLoggedIn() {
+        if (!getToken().isEmpty()) {
+            val intent = Intent(this, PieChartActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
     }
 
-    fun isOnline(): Boolean {
+    private fun getToken(): String {
+        val settings = getSharedPreferences("TOKEN", 0)
+        val token = settings.getString(keyToken, "")
+        Log.d("token= ", token)
+        return token ?: throw NullPointerException("Expression 'token' must not be null")
+    }
+
+    private fun isOnline(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
         return netInfo != null && netInfo.isConnectedOrConnecting
     }
 
-    fun showInternetSnackBar() {
+    private fun showInternetSnackBar() {
         val snackbar = Snackbar
             .make(findViewById(android.R.id.content), getString(R.string.no_internet_connection), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.try_again)) {
@@ -83,7 +94,16 @@ class LoginActivity : AppCompatActivity(), LoginView {
         snackbar.show()
     }
 
-    fun showErrorSnackBar(errorMsg: String) {
+    private fun validateEmailPassword() {
+        loginPresenter.validateData(
+            (emailET?.text ?: throw NullPointerException("Expression 'emailET?.text' must not be null")).toString()
+            ,
+            (passwordET?.text
+                ?: throw NullPointerException("Expression 'passwordET?.text' must not be null")).toString()
+        )
+    }
+
+    private fun showErrorSnackBar(errorMsg: String) {
         val snackbar = Snackbar.make(
             findViewById(android.R.id.content),
             errorMsg,
@@ -96,7 +116,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }
 
     private fun saveToken(token: String) {
-
         val settings = getSharedPreferences("TOKEN", 0)
         val editor = settings.edit()
         editor.putString(keyToken, token)
@@ -107,6 +126,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
     private fun openDataActivity() {
         val intent = Intent(this, PieChartActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

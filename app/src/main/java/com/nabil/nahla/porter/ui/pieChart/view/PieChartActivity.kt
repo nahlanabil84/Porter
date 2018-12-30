@@ -1,6 +1,7 @@
 package com.nabil.nahla.porter.ui.pieChart.view
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout.VERTICAL
 import android.widget.TextView
@@ -20,12 +23,12 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.nabil.nahla.porter.R
+import com.nabil.nahla.porter.ui.login.view.LoginActivity
 import com.nabil.nahla.porter.ui.pieChart.adapter.DataAdapter
 import com.nabil.nahla.porter.ui.pieChart.presenter.PieChartPresenter
 import com.nabil.nahla.porter.ui.pieChart.presenter.PieChartPresenterImp
 import kotlinx.android.synthetic.main.activity_pie_chart.*
 import java.util.*
-
 
 class PieChartActivity : AppCompatActivity(), PieChartView {
     private lateinit var pieChartPresenter: PieChartPresenter
@@ -46,6 +49,41 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         if (isOnline()) pieChartPresenter.checkTokenExixts(getToken())
         else showInternetSnackBar()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.logoutAction -> {
+            clearToken()
+            openLoginActivity()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun showLoading() {
+        progress_pieChart.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        progress_pieChart.visibility = View.GONE
+    }
+
+    override fun showMessage(stringResourceId: Int) {
+        showErrorSnackBar(getString(stringResourceId))
+    }
+
+    override fun showMessage(errorMsg: String) {
+        showErrorSnackBar(errorMsg)
+    }
+
+    override fun loadData(response: MutableList<Any>) {
+        dataAdapter.updateData(response)
+        setPieData(response)
     }
 
     private fun setPieChartProperties() {
@@ -76,6 +114,26 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         dataRV.adapter = dataAdapter
     }
 
+    private fun isOnline(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    private fun showInternetSnackBar() {
+        val snackbar = Snackbar
+            .make(findViewById(android.R.id.content), getString(R.string.no_internet_connection), Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.try_again)) {
+                if (isOnline()) pieChartPresenter.checkTokenExixts(getToken())
+                else showInternetSnackBar()
+            }
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+        val sbView = snackbar.view
+        val textView = sbView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+        textView.setTextColor(Color.WHITE)
+        snackbar.show()
+    }
+
     private fun getToken(): String {
         val settings = getSharedPreferences("TOKEN", 0)
         val token = settings.getString(keyToken, "")
@@ -93,7 +151,7 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
 
             val item = (dataRow[1] as Double).toFloat()
 
-            entries.add(PieEntry(item , dataRow[0] as String))
+            entries.add(PieEntry(item, dataRow[0] as String))
 
             colors.add(Color.parseColor(generateColor(Random())))
         }
@@ -119,26 +177,6 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         return String(s)
     }
 
-    private fun isOnline(): Boolean {
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        return netInfo != null && netInfo.isConnectedOrConnecting
-    }
-
-    private fun showInternetSnackBar() {
-        val snackbar = Snackbar
-            .make(findViewById(android.R.id.content), getString(R.string.no_internet_connection), Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.try_again)) {
-                if (isOnline()) pieChartPresenter.checkTokenExixts(getToken())
-                else showInternetSnackBar()
-            }
-        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent))
-        val sbView = snackbar.view
-        val textView = sbView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-        textView.setTextColor(Color.WHITE)
-        snackbar.show()
-    }
-
     private fun showErrorSnackBar(errorMsg: String) {
         val snackbar = Snackbar.make(
             findViewById(android.R.id.content),
@@ -151,25 +189,17 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         snackbar.show()
     }
 
-    override fun showLoading() {
-        progress_pieChart.visibility = View.VISIBLE
+    private fun openLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
-    override fun hideLoading() {
-        progress_pieChart.visibility = View.GONE
-    }
-
-    override fun showMessage(stringResourceId: Int) {
-        showErrorSnackBar(getString(stringResourceId))
-    }
-
-    override fun showMessage(errorMsg: String) {
-        showErrorSnackBar(errorMsg)
-    }
-
-    override fun loadData(response: MutableList<Any>) {
-        dataAdapter.updateData(response)
-        setPieData(response)
+    private fun clearToken() {
+        val settings = getSharedPreferences("TOKEN", 0)
+        val editor = settings.edit()
+        editor.clear()
+        editor.apply()
     }
 
 }
