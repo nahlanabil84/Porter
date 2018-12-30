@@ -19,4 +19,11 @@ class DataAdapter(private val dataList: MutableList<Any>) : RecyclerView.Adapter
     override fun getItemCount(): Int {
         return dataList.size
     }
+
+    fun updateData(data: MutableList<Any>) {
+        dataList.clear()
+        dataList.addAll(data)
+        notifyDataSetChanged()
+    }
+
 }

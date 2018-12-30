@@ -32,6 +32,7 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
     private val keyToken = "KEY_TOKEN"
 
     private var allData: MutableList<Any> = mutableListOf()
+    private val dataAdapter: DataAdapter = DataAdapter(allData)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,7 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         val mDividerItemDecoration = DividerItemDecoration(this, VERTICAL)
         dataRV.addItemDecoration(mDividerItemDecoration)
 
-        dataRV.adapter = DataAdapter(allData)
+        dataRV.adapter = dataAdapter
     }
 
     private fun getToken(): String {
@@ -84,18 +85,15 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
 
     private fun setPieData(allData: MutableList<Any>) {
         val entries = ArrayList<PieEntry>()
-        val dataRow: MutableList<Any> = allData[allData.size -1] as MutableList<Any>
-
-        val total = (dataRow[1] as Int).toFloat()
 
         var colors: MutableList<Int> = mutableListOf()
 
         for (i in 0..allData.size - 2) {
             val dataRow: MutableList<Any> = allData[i] as MutableList<Any>
 
-            val item = (dataRow[1] as Int).toFloat()
+            val item = (dataRow[1] as Double).toFloat()
 
-            entries.add(PieEntry(item / total, dataRow[0] as String))
+            entries.add(PieEntry(item , dataRow[0] as String))
 
             colors.add(Color.parseColor(generateColor(Random())))
         }
@@ -170,8 +168,7 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
     }
 
     override fun loadData(response: MutableList<Any>) {
-        allData = response
-        dataRV.adapter?.notifyDataSetChanged()
+        dataAdapter.updateData(response)
         setPieData(response)
     }
 

@@ -14,9 +14,9 @@ class DataVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun onBind(dataList: MutableList<Any>) {
-        val dataRow: MutableList<Any> = dataList.get(adapterPosition) as MutableList<Any>
+        val dataRow: MutableList<*> = dataList[adapterPosition] as MutableList<*>
         itemView.countTV.text = (adapterPosition + 1).toString()
         itemView.dateTV.text = dataRow.first() as String
-        itemView.numberTV.text = (dataRow.last() as Int).toString()
+        itemView.numberTV.text = ((dataRow.last() as Double).toInt()).toString()
     }
 }

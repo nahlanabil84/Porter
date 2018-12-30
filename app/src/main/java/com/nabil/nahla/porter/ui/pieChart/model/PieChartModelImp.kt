@@ -7,8 +7,7 @@ import retrofit2.Response
 
 open class PieChartModelImp : PieChartModel {
     override fun getTestingData(token: String, listener: PieChartModel.OnDataLoadedListener) {
-        AppApiHelper("").api()?.getCustomerTesting()?.enqueue(object :
-            Callback<MutableList<Any>> {
+        AppApiHelper(token).api()?.getCustomerTesting()?.enqueue(object : Callback<MutableList<Any>> {
             override fun onResponse(call: Call<MutableList<Any>>, response: Response<MutableList<Any>>) {
                 if (response.isSuccessful && response.body() != null) {
                     listener.onSuccess(response.body()!!)

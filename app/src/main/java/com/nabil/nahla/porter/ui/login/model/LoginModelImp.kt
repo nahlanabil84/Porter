@@ -9,8 +9,7 @@ import retrofit2.Response
 open class LoginModelImp : LoginModel {
 
     override fun postLogin(email: String, password: String, listener: LoginModel.OnLoginFinishedListener) {
-        AppApiHelper("").api()?.postCustomerLogin(email, password)?.enqueue(object :
-            Callback<ResponseLogin> {
+        AppApiHelper("").api()?.postCustomerLogin(email, password)?.enqueue(object : Callback<ResponseLogin> {
             override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                 if (response.isSuccessful) {
                     if (!response.body()?.token.isNullOrEmpty() && response.body()?.error.isNullOrEmpty())
