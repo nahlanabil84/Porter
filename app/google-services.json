@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "963665007109",
+    "firebase_url": "https://porter-10003.firebaseio.com",
+    "project_id": "porter-10003",
+    "storage_bucket": "porter-10003.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963665007109:android:98f9b94e54eae909",
+        "android_client_info": {
+          "package_name": "com.nabil.nahla.porter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963665007109-dlktbo79rruka06er2eargk59sdvf5ge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nabil.nahla.porter",
+            "certificate_hash": "8b45fab26c953ddd391d346cacaf8dcc77edec43"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaNpmKjxLN-RrmAc1W_sx-Rs72QgzAiIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963665007109-iqer7am9a37j04p42dkgtukf6ef96pud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
