@@ -16,7 +16,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import com.nabil.nahla.porter.R
 import kotlinx.android.synthetic.main.activity_barcode.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
@@ -62,7 +61,7 @@ class BarcodeActivity : AppCompatActivity(), ZXingScannerView.ResultHandler, Per
     override fun onResume() {
         super.onResume()
         zxingSV.setResultHandler(this)
-        zxingSV.flash = true
+        zxingSV.flash = false
         zxingSV.setAutoFocus(true)
         zxingSV.setAspectTolerance(0.5f)
         zxingSV.startCamera()
