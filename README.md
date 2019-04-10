@@ -1,4 +1,4 @@
-# Porter- Android App
+# Porter Android App - Kotlin & MVP Architecture
 It's implmentation of Firebase Authentication, Firebase Realtime-Database, PieChart & Barcode Scanner.
 
 ## Screenshots
