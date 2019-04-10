@@ -1,5 +1,7 @@
 package com.nabil.nahla.porter.ui.pieChart.view
 
+import com.nabil.nahla.porter.data.models.ProductsItem
+
 interface PieChartView {
     fun showLoading()
 
@@ -9,6 +11,6 @@ interface PieChartView {
 
     fun showMessage(errorMsg: String)
 
-    fun loadData(response: MutableList<Any>)
+    fun loadProducts(products: MutableList<ProductsItem>)
 
 }

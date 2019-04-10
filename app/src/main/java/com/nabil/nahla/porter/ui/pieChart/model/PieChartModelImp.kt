@@ -1,24 +1,27 @@
 package com.nabil.nahla.porter.ui.login.model
 
-import com.nabil.nahla.porter.R
-import com.nabil.nahla.porter.data.network.AppApiHelper
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.firebase.database.*
+import com.nabil.nahla.porter.data.models.ProductsItem
+
 
 open class PieChartModelImp : PieChartModel {
-    override fun getTestingData(token: String, listener: PieChartModel.OnDataLoadedListener) {
-        AppApiHelper(token).api()?.getCustomerTesting()?.enqueue(object : Callback<MutableList<Any>> {
-            override fun onResponse(call: Call<MutableList<Any>>, response: Response<MutableList<Any>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    listener.onSuccess(response.body()!!)
-                } else {
-                    listener.onFailed(response.message().toString())
+    override fun getTestingDataViaFireBase(token: String, listener: PieChartModel.OnDataLoadedListener) {
+
+        val myRef = FirebaseDatabase.getInstance().getReference("products")
+        myRef.keepSynced(true)
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                val t = object : GenericTypeIndicator<MutableList<ProductsItem>>() {
+
                 }
+                val responseProducts = dataSnapshot.getValue(t)
+                listener.onSuccess(responseProducts!!)
             }
 
-            override fun onFailure(call: Call<MutableList<Any>>, t: Throwable) {
-                listener.onFailed(R.string.error_token_does_not_exist)
+            override fun onCancelled(error: DatabaseError) {
+                listener.onFailed(error.toException().localizedMessage.toString())
             }
         })
     }

@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.auth.FirebaseAuth
+import com.nabil.nahla.porter.data.models.ProductsItem
 import com.nabil.nahla.porter.ui.barcode.view.BarcodeActivity
 import com.nabil.nahla.porter.ui.login.view.LoginActivity
 import com.nabil.nahla.porter.ui.pieChart.adapter.DataAdapter
@@ -31,11 +32,13 @@ import com.nabil.nahla.porter.ui.pieChart.presenter.PieChartPresenterImp
 import kotlinx.android.synthetic.main.activity_pie_chart.*
 import java.util.*
 
+
 class PieChartActivity : AppCompatActivity(), PieChartView {
     private lateinit var pieChartPresenter: PieChartPresenter
+
     private val keyToken = "KEY_TOKEN"
 
-    private var allData: MutableList<Any> = mutableListOf()
+    private var allData: MutableList<ProductsItem> = mutableListOf()
     private val dataAdapter: DataAdapter = DataAdapter(allData)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +54,6 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         else showInternetSnackBar()
 
     }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
@@ -85,9 +87,9 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         showErrorSnackBar(errorMsg)
     }
 
-    override fun loadData(response: MutableList<Any>) {
-        dataAdapter.updateData(response)
-        setPieData(response)
+    override fun loadProducts(products: MutableList<ProductsItem>) {
+        dataAdapter.updateData(products)
+        setPieData(products)
     }
 
     private fun setPieChartProperties() {
@@ -145,17 +147,15 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
         return token ?: throw NullPointerException("Expression 'token' must not be null")
     }
 
-    private fun setPieData(allData: MutableList<Any>) {
+    private fun setPieData(allData: MutableList<ProductsItem>) {
         val entries = ArrayList<PieEntry>()
 
         var colors: MutableList<Int> = mutableListOf()
 
-        for (i in 0..allData.size - 2) {
-            val dataRow: MutableList<Any> = allData[i] as MutableList<Any>
+        for (i in 0 until allData.size) {
+            val item = allData[i].count!!.toFloat()
 
-            val item = (dataRow[1] as Double).toFloat()
-
-            entries.add(PieEntry(item, dataRow[0] as String))
+            entries.add(PieEntry(item, allData[i].name))
 
             colors.add(Color.parseColor(generateColor(Random())))
         }

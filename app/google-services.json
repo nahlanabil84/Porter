@@ -21,6 +21,10 @@
             "package_name": "com.nabil.nahla.porter",
             "certificate_hash": "8b45fab26c953ddd391d346cacaf8dcc77edec43"
           }
+        },
+        {
+          "client_id": "963665007109-iqer7am9a37j04p42dkgtukf6ef96pud.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

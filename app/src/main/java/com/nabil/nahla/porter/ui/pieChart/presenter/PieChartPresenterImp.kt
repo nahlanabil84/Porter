@@ -1,6 +1,6 @@
 package com.nabil.nahla.porter.ui.pieChart.presenter
 
-import com.nabil.nahla.porter.R
+import com.nabil.nahla.porter.data.models.ProductsItem
 import com.nabil.nahla.porter.ui.login.model.PieChartModel
 import com.nabil.nahla.porter.ui.login.model.PieChartModelImp
 import com.nabil.nahla.porter.ui.pieChart.view.PieChartView
@@ -18,7 +18,7 @@ class PieChartPresenterImp(private val pieChartView: PieChartView) : PieChartPre
             pieChartView.showMessage(R.string.error_token_does_not_exist)
         else {
             pieChartView.showLoading()
-            pieChartModel.getTestingData(token, this)
+            pieChartModel.getTestingDataViaFireBase(token, this)
         }
     }
 
@@ -32,8 +32,8 @@ class PieChartPresenterImp(private val pieChartView: PieChartView) : PieChartPre
         pieChartView.showMessage(errorMsg)
     }
 
-    override fun onSuccess(response: MutableList<Any>) {
+    override fun onSuccess(response: MutableList<ProductsItem>) {
         pieChartView.hideLoading()
-        pieChartView.loadData(response)
+        pieChartView.loadProducts(response)
     }
 }

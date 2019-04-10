@@ -3,9 +3,9 @@ package com.nabil.nahla.porter.ui.pieChart.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.nabil.nahla.porter.R
+import com.nabil.nahla.porter.data.models.ProductsItem
 
-class DataAdapter(private val dataList: MutableList<Any>) : RecyclerView.Adapter<DataVH>() {
+class DataAdapter(private val dataList: MutableList<ProductsItem>) : RecyclerView.Adapter<DataVH>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): DataVH {
         return DataVH(LayoutInflater.from(p0.context).inflate(R.layout.item_data_row, p0, false))
@@ -20,7 +20,7 @@ class DataAdapter(private val dataList: MutableList<Any>) : RecyclerView.Adapter
         return dataList.size
     }
 
-    fun updateData(data: MutableList<Any>) {
+    fun updateData(data: MutableList<ProductsItem>) {
         dataList.clear()
         dataList.addAll(data)
         notifyDataSetChanged()
