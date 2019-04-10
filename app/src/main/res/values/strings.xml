@@ -3,10 +3,16 @@
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
     <string name="button_sign_in">Sign in</string>
+    <string name="button_sign_up">Sign up</string>
+
+    <string name="text_create_new_acc"><u>Create new Account</u></string>
+    <string name="text_already_have_acc"><u>Already have Account</u></string>
 
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_invalid_password">Short password</string>
+    <string name="error_invalid_confirm_password">Unmatched passwords</string>
     <string name="error_invalid_email_or_password">Invalid email or password</string>
     <string name="error_login">Failed to login</string>
 

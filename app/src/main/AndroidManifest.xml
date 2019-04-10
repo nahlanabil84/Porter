@@ -4,8 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
             android:allowBackup="true"
@@ -26,6 +25,8 @@
         <activity android:name=".ui.pieChart.view.PieChartActivity">
         </activity>
         <activity android:name=".ui.barcode.view.BarcodeActivity">
+        </activity>
+        <activity android:name=".ui.register.view.RegisterActivity">
         </activity>
     </application>
 

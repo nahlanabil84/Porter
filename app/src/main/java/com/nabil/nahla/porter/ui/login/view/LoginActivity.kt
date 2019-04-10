@@ -11,29 +11,37 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.nabil.nahla.porter.R
+import com.google.firebase.auth.FirebaseAuth
 import com.nabil.nahla.porter.data.models.ResponseLogin
 import com.nabil.nahla.porter.ui.login.presenter.LoginPresenter
 import com.nabil.nahla.porter.ui.login.presenter.LoginPresenterImp
 import com.nabil.nahla.porter.ui.pieChart.view.PieChartActivity
+import com.nabil.nahla.porter.ui.register.view.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), LoginView {
     private lateinit var loginPresenter: LoginPresenter
     private val keyToken = "KEY_TOKEN"
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        mAuth = FirebaseAuth.getInstance()
 
-        checkLoggedIn()
+        //checkLoggedIn()
 
         loginPresenter = LoginPresenterImp(this)
 
         signInB.setOnClickListener {
             if (isOnline()) validateEmailPassword()
             else showInternetSnackBar()
+        }
+
+        createNewAccTV.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -58,8 +66,23 @@ class LoginActivity : AppCompatActivity(), LoginView {
         openDataActivity()
     }
 
+    override fun proceedToNext(token: String) {
+        saveToken(token)
+        openDataActivity()
+    }
+
     private fun checkLoggedIn() {
         if (!getToken().isEmpty()) {
+            val intent = Intent(this, PieChartActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser != null) {
             val intent = Intent(this, PieChartActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)

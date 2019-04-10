@@ -13,4 +13,6 @@ interface LoginView {
 
     fun proceedToNext(response: ResponseLogin)
 
+    fun proceedToNext(token: String)
+
 }

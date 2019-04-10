@@ -22,14 +22,13 @@ import com.github.mikephil.charting.components.Legend.LegendPosition.RIGHT_OF_CH
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.nabil.nahla.porter.R
+import com.google.firebase.auth.FirebaseAuth
 import com.nabil.nahla.porter.ui.barcode.view.BarcodeActivity
 import com.nabil.nahla.porter.ui.login.view.LoginActivity
 import com.nabil.nahla.porter.ui.pieChart.adapter.DataAdapter
 import com.nabil.nahla.porter.ui.pieChart.presenter.PieChartPresenter
 import com.nabil.nahla.porter.ui.pieChart.presenter.PieChartPresenterImp
 import kotlinx.android.synthetic.main.activity_pie_chart.*
-
 import java.util.*
 
 class PieChartActivity : AppCompatActivity(), PieChartView {
@@ -60,8 +59,7 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.logoutAction -> {
-            clearToken()
-            openLoginActivity()
+            logout()
             true
         }
         R.id.barcodeAction -> {
@@ -186,14 +184,19 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
     private fun showErrorSnackBar(errorMsg: String) {
         val snackbar = Snackbar.make(findViewById(android.R.id.content), errorMsg, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.logout)) {
-                clearToken()
-                openLoginActivity()
+                logout()
             }
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent))
         val sbView = snackbar.view
         val textView = sbView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
         textView.setTextColor(Color.WHITE)
         snackbar.show()
+    }
+
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        clearToken()
+        openLoginActivity()
     }
 
     private fun clearToken() {
@@ -205,6 +208,7 @@ class PieChartActivity : AppCompatActivity(), PieChartView {
 
     private fun openLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
         finish()
     }
